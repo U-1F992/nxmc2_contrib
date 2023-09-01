@@ -3,11 +3,11 @@
 const uint8_t NXMC2_COMMAND_HEADER = 0xABU;
 const uint8_t NXMC2_COMMAND_STICK_NEUTRAL = 128U;
 
-void nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandlers *handlers)
+NXMC2Result nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandlers *handlers)
 {
     if (command == NULL || handlers == NULL)
     {
-        return;
+        return NXMC2_RESULT_NULL_POINTER_ERROR;
     }
 
     if (handlers->y != NULL)
@@ -82,4 +82,5 @@ void nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandlers *handlers
     {
         handlers->ext(command->ext0, command->ext1, command->ext2);
     }
+    return NXMC2_RESULT_OK;
 }

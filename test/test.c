@@ -39,33 +39,28 @@ static void ext(uint8_t ext0, uint8_t ext1, uint8_t ext2)
     ext2_ = ext2;
 }
 
-static void test_util_append_all(NXMC2CommandBuilder *builder, uint8_t *data, size_t size)
-{
-    for (int i = 0; i < size; i++)
-    {
-        nxmc2_command_builder_append(builder, data[i]);
-    }
-}
-
 void test_build(void)
 {
     uint8_t data[] = {0xABU, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
-    nxmc2_command_builder_initialize(&builder);
-    test_util_append_all(&builder, data, 11);
+    assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
+    for (int i = 0; i < 11; i++)
+    {
+        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_OK);
+    }
 
     NXMC2Command command;
-    assert(nxmc2_command_builder_build(&builder, &command));
+    assert(nxmc2_command_builder_build(&builder, &command) == NXMC2_RESULT_OK);
 
     NXMC2CommandHandlers handlers;
-    nxmc2_command_handlers_initialize(&handlers);
+    assert(nxmc2_command_handlers_initialize(&handlers) == NXMC2_RESULT_OK);
     handlers.y = y;
     handlers.b = b;
     handlers.hat = hat;
     handlers.l_stick = l_stick;
     handlers.ext = ext;
-    nxmc2_command_execute(&command, &handlers);
+    assert(nxmc2_command_execute(&command, &handlers) == NXMC2_RESULT_OK);
     assert(y_state == NXMC2_COMMAND_BUTTON_STATE_PRESSED);
     assert(b_state == NXMC2_COMMAND_BUTTON_STATE_RELEASED);
     assert(hat_state == NXMC2_COMMAND_HAT_STATE_NEUTRAL);
@@ -81,11 +76,16 @@ void test_invalid_header(void)
     uint8_t data[] = {/* */ 0xFFU /* */, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
-    nxmc2_command_builder_initialize(&builder);
-    test_util_append_all(&builder, data, 11);
+    assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
+    
+    assert(nxmc2_command_builder_append(&builder, data[0]) == NXMC2_RESULT_INVALID_HEADER_ERROR);
+    for (int i = 1; i < 11; i++)
+    {
+        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_INVALID_HEADER_ERROR);
+    }
 
     NXMC2Command command;
-    assert(!nxmc2_command_builder_build(&builder, &command));
+    assert(nxmc2_command_builder_build(&builder, &command) == NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR);
 }
 
 void test_invalid_hat_range(void)
@@ -93,11 +93,20 @@ void test_invalid_hat_range(void)
     int8_t data[] = {0xABU, 0U, 0U, /* */ 0xFFU /* */, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
-    nxmc2_command_builder_initialize(&builder);
-    test_util_append_all(&builder, data, 11);
+    assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
+
+    for (int i = 0; i < 3; i++)
+    {
+        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_OK);
+    }
+    assert(nxmc2_command_builder_append(&builder, data[3]) == NXMC2_RESULT_INVALID_HAT_RANGE_ERROR);
+    for (int i = 4; i < 11; i++)
+    {
+        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_INVALID_HEADER_ERROR);
+    }
 
     NXMC2Command command;
-    assert(!nxmc2_command_builder_build(&builder, &command));
+    assert(nxmc2_command_builder_build(&builder, &command) == NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR);
 }
 
 int main(void)

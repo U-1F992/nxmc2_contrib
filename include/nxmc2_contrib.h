@@ -7,13 +7,13 @@
 
 extern const uint8_t NXMC2_COMMAND_HEADER;
 
-typedef enum
+typedef enum NXMC2CommandButtonState
 {
     NXMC2_COMMAND_BUTTON_STATE_RELEASED,
     NXMC2_COMMAND_BUTTON_STATE_PRESSED
 } NXMC2CommandButtonState;
 
-typedef enum
+typedef enum NXMC2CommandHatState
 {
     NXMC2_COMMAND_HAT_STATE_UP,
     NXMC2_COMMAND_HAT_STATE_UPRIGHT,
@@ -88,11 +88,20 @@ typedef struct NXMC2CommandHandlers
     void (*ext)(uint8_t ext0, uint8_t ext1, uint8_t ext2);
 } NXMC2CommandHandlers;
 
-void nxmc2_command_builder_clear(NXMC2CommandBuilder *builder);
-void nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t packet);
-bool nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Command *command);
-void nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder);
-void nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandlers *handlers);
-void nxmc2_command_handlers_initialize(NXMC2CommandHandlers *handlers);
+typedef enum NXMC2Result
+{
+    NXMC2_RESULT_OK,
+    NXMC2_RESULT_NULL_POINTER_ERROR,
+    NXMC2_RESULT_INVALID_HEADER_ERROR,
+    NXMC2_RESULT_INVALID_HAT_RANGE_ERROR,
+    NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR,
+} NXMC2Result;
+
+NXMC2Result nxmc2_command_builder_clear(NXMC2CommandBuilder *builder);
+NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t packet);
+NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Command *command);
+NXMC2Result nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder);
+NXMC2Result nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandlers *handlers);
+NXMC2Result nxmc2_command_handlers_initialize(NXMC2CommandHandlers *handlers);
 
 #endif

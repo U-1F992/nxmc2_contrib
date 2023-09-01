@@ -1,7 +1,12 @@
 #include "nxmc2_contrib.h"
 
-void nxmc2_command_handlers_initialize(NXMC2CommandHandlers *handlers)
+NXMC2Result nxmc2_command_handlers_initialize(NXMC2CommandHandlers *handlers)
 {
+    if (handlers == NULL)
+    {
+        return NXMC2_RESULT_NULL_POINTER_ERROR;
+    }
+
     handlers->y = NULL;
     handlers->b = NULL;
     handlers->a = NULL;
@@ -20,4 +25,5 @@ void nxmc2_command_handlers_initialize(NXMC2CommandHandlers *handlers)
     handlers->l_stick = NULL;
     handlers->r_stick = NULL;
     handlers->ext = NULL;
+    return NXMC2_RESULT_OK;
 }
