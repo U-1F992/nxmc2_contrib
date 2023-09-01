@@ -7,7 +7,7 @@ include_directories(include)
 add_library(nxmc2_contrib STATIC 
             src/nxmc2_command.c
             src/nxmc2_command_builder.c
-            src/nxmc2_command_handlers.c)
+            src/nxmc2_command_handler.c)
 
 # Create test executable
 add_executable(test test/test.c)

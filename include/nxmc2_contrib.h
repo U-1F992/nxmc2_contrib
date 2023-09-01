@@ -71,7 +71,7 @@ typedef struct NXMC2CommandBuilder
     size_t pos_;
 } NXMC2CommandBuilder;
 
-typedef struct NXMC2CommandHandlers
+typedef struct NXMC2CommandHandler
 {
     void (*y)(NXMC2CommandButtonState state);
     void (*b)(NXMC2CommandButtonState state);
@@ -91,7 +91,7 @@ typedef struct NXMC2CommandHandlers
     void (*l_stick)(uint8_t x, uint8_t y);
     void (*r_stick)(uint8_t x, uint8_t y);
     void (*ext)(uint8_t ext0, uint8_t ext1, uint8_t ext2);
-} NXMC2CommandHandlers;
+} NXMC2CommandHandler;
 
 typedef enum NXMC2Result
 {
@@ -107,8 +107,8 @@ NXMC2Result nxmc2_command_builder_flush(NXMC2CommandBuilder *builder);
 NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t packet);
 NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Command *command);
 NXMC2Result nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder);
-NXMC2Result nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandlers *handlers);
-NXMC2Result nxmc2_command_handlers_initialize(NXMC2CommandHandlers *handlers);
+NXMC2Result nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandler *handler);
+NXMC2Result nxmc2_command_handler_initialize(NXMC2CommandHandler *handler);
 
 #ifdef __cplusplus
 }

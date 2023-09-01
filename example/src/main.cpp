@@ -134,32 +134,32 @@ static int inactive_count = 0;
 
 static NXMC2CommandBuilder builder;
 static NXMC2Command command;
-static NXMC2CommandHandlers handlers;
+static NXMC2CommandHandler handler;
 
 void setup()
 {
     Serial.begin(9600);
 
     nxmc2_command_builder_initialize(&builder);
-    nxmc2_command_handlers_initialize(&handlers);
-    handlers.y = handle_y;
-    handlers.b = handle_b;
-    handlers.a = handle_a;
-    handlers.x = handle_x;
-    handlers.l = handle_l;
-    handlers.r = handle_r;
-    handlers.zl = handle_zl;
-    handlers.zr = handle_zr;
-    handlers.minus = handle_minus;
-    handlers.plus = handle_plus;
-    handlers.l_click = handle_l_click;
-    handlers.r_click = handle_r_click;
-    handlers.home = handle_home;
-    handlers.capture = handle_capture;
-    handlers.hat = handle_hat;
-    handlers.l_stick = handle_l_stick;
-    handlers.r_stick = handle_r_stick;
-    handlers.ext = handle_ext;
+    nxmc2_command_handler_initialize(&handler);
+    handler.y = handle_y;
+    handler.b = handle_b;
+    handler.a = handle_a;
+    handler.x = handle_x;
+    handler.l = handle_l;
+    handler.r = handle_r;
+    handler.zl = handle_zl;
+    handler.zr = handle_zr;
+    handler.minus = handle_minus;
+    handler.plus = handle_plus;
+    handler.l_click = handle_l_click;
+    handler.r_click = handle_r_click;
+    handler.home = handle_home;
+    handler.capture = handle_capture;
+    handler.hat = handle_hat;
+    handler.l_stick = handle_l_stick;
+    handler.r_stick = handle_r_stick;
+    handler.ext = handle_ext;
 }
 
 void loop()
@@ -192,7 +192,7 @@ void loop()
         // NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR
         return;
     }
-    nxmc2_command_execute(&command, &handlers);
+    nxmc2_command_execute(&command, &handler);
 
     // Once the command is completed, flush required.
     nxmc2_command_builder_flush(&builder);

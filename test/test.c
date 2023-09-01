@@ -53,14 +53,14 @@ void test_build(void)
     NXMC2Command command;
     assert(nxmc2_command_builder_build(&builder, &command) == NXMC2_RESULT_OK);
 
-    NXMC2CommandHandlers handlers;
-    assert(nxmc2_command_handlers_initialize(&handlers) == NXMC2_RESULT_OK);
-    handlers.y = y;
-    handlers.b = b;
-    handlers.hat = hat;
-    handlers.l_stick = l_stick;
-    handlers.ext = ext;
-    assert(nxmc2_command_execute(&command, &handlers) == NXMC2_RESULT_OK);
+    NXMC2CommandHandler handler;
+    assert(nxmc2_command_handler_initialize(&handler) == NXMC2_RESULT_OK);
+    handler.y = y;
+    handler.b = b;
+    handler.hat = hat;
+    handler.l_stick = l_stick;
+    handler.ext = ext;
+    assert(nxmc2_command_execute(&command, &handler) == NXMC2_RESULT_OK);
     assert(y_state == NXMC2_COMMAND_BUTTON_STATE_PRESSED);
     assert(b_state == NXMC2_COMMAND_BUTTON_STATE_RELEASED);
     assert(hat_state == NXMC2_COMMAND_HAT_STATE_NEUTRAL);
