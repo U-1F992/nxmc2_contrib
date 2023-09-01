@@ -1,6 +1,11 @@
 #ifndef NXMC2_CONTRIB_H_
 #define NXMC2_CONTRIB_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -93,7 +98,7 @@ typedef enum NXMC2Result
     NXMC2_RESULT_OK,
     NXMC2_RESULT_NULL_POINTER_ERROR,
     NXMC2_RESULT_INVALID_HEADER_ERROR,
-    NXMC2_RESULT_INVALID_HAT_RANGE_ERROR,
+    NXMC2_RESULT_INVALID_HAT_ERROR,
     NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR,
     NXMC2_RESULT_FLUSH_REQUIRED_ERROR
 } NXMC2Result;
@@ -104,5 +109,9 @@ NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Comma
 NXMC2Result nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder);
 NXMC2Result nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandlers *handlers);
 NXMC2Result nxmc2_command_handlers_initialize(NXMC2CommandHandlers *handlers);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

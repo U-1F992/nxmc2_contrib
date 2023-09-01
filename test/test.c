@@ -93,7 +93,7 @@ void test_invalid_header(void)
     assert(nxmc2_command_builder_build(&builder, &command) == NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR);
 }
 
-void test_invalid_hat_range(void)
+void test_invalid_hat(void)
 {
     int8_t data[] = {0xABU, 0U, 0U, /* */ 0xFFU /* */, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
@@ -104,10 +104,10 @@ void test_invalid_hat_range(void)
     {
         assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_OK);
     }
-    assert(nxmc2_command_builder_append(&builder, data[3]) == NXMC2_RESULT_INVALID_HAT_RANGE_ERROR);
+    assert(nxmc2_command_builder_append(&builder, data[3]) == NXMC2_RESULT_INVALID_HAT_ERROR);
     for (int i = 4; i < 11; i++)
     {
-        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_INVALID_HAT_RANGE_ERROR);
+        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_INVALID_HAT_ERROR);
     }
 
     NXMC2Command command;
@@ -118,7 +118,7 @@ int main(void)
 {
     test_build();
     test_invalid_header();
-    test_invalid_hat_range();
+    test_invalid_hat();
 
     printf("ok\n");
     return 0;

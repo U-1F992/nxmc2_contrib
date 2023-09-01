@@ -25,7 +25,7 @@ static bool is_valid_header_(size_t pos, uint8_t packet)
     return packet == NXMC2_COMMAND_HEADER;
 }
 
-static bool is_valid_hat_range_(size_t pos, uint8_t packet)
+static bool is_valid_hat_(size_t pos, uint8_t packet)
 {
     if (pos != 3)
     {
@@ -45,9 +45,9 @@ NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t p
     {
         return NXMC2_RESULT_INVALID_HEADER_ERROR;
     }
-    else if (!is_valid_hat_range_(builder->pos_, packet))
+    else if (!is_valid_hat_(builder->pos_, packet))
     {
-        return NXMC2_RESULT_INVALID_HAT_RANGE_ERROR;
+        return NXMC2_RESULT_INVALID_HAT_ERROR;
     }
     else if (is_complete_command_(builder->pos_))
     {
