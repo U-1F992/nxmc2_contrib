@@ -49,11 +49,11 @@ static void test_util_append_all(NXMC2CommandBuilder *builder, uint8_t *data, si
 
 void test_build(void)
 {
-    uint8_t test[] = {0xABU, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
+    uint8_t data[] = {0xABU, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
     nxmc2_command_builder_initialize(&builder);
-    test_util_append_all(&builder, test, 11);
+    test_util_append_all(&builder, data, 11);
 
     NXMC2Command command;
     assert(nxmc2_command_builder_build(&builder, &command));
@@ -78,11 +78,11 @@ void test_build(void)
 
 void test_invalid_header(void)
 {
-    uint8_t test[] = {/* */ 0xFFU /* */, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
+    uint8_t data[] = {/* */ 0xFFU /* */, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
     nxmc2_command_builder_initialize(&builder);
-    test_util_append_all(&builder, test, 11);
+    test_util_append_all(&builder, data, 11);
 
     NXMC2Command command;
     assert(!nxmc2_command_builder_build(&builder, &command));
@@ -90,11 +90,11 @@ void test_invalid_header(void)
 
 void test_invalid_hat_range(void)
 {
-    int8_t test[] = {0xABU, 0U, 0U, /* */ 0xFFU /* */, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
+    int8_t data[] = {0xABU, 0U, 0U, /* */ 0xFFU /* */, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
     nxmc2_command_builder_initialize(&builder);
-    test_util_append_all(&builder, test, 11);
+    test_util_append_all(&builder, data, 11);
 
     NXMC2Command command;
     assert(!nxmc2_command_builder_build(&builder, &command));
