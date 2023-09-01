@@ -40,23 +40,23 @@ int main(void)
     uint8_t data[] = {0xABU, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
-    nxmc2_command_builder_initialize(&builder);
+    assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
     for (int i = 0; i < 11; i++)
     {
-        nxmc2_command_builder_append(&builder, data[i]);
+        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_OK);
     }
 
     NXMC2Command command;
-    assert(nxmc2_command_builder_build(&builder, &command));
+    assert(nxmc2_command_builder_build(&builder, &command) == NXMC2_RESULT_OK);
 
     NXMC2CommandHandlers handlers;
-    nxmc2_command_handlers_initialize(&handlers);
+    assert(nxmc2_command_handlers_initialize(&handlers) == NXMC2_RESULT_OK);
     handlers.y = y;
     handlers.b = b;
     handlers.hat = hat;
     handlers.l_stick = l_stick;
     handlers.ext = ext;
-    nxmc2_command_execute(&command, &handlers);
+    assert(nxmc2_command_execute(&command, &handlers) == NXMC2_RESULT_OK);
     assert(y_state == NXMC2_COMMAND_BUTTON_STATE_PRESSED);
     assert(b_state == NXMC2_COMMAND_BUTTON_STATE_RELEASED);
     assert(hat_state == NXMC2_COMMAND_HAT_STATE_NEUTRAL);
@@ -65,6 +65,11 @@ int main(void)
     assert(ext0_ == 0xFFU);
     assert(ext1_ == 0xFEU);
     assert(ext2_ == 0xFDU);
+
+    // Once the command is completed, flush required.
+    assert(nxmc2_command_builder_append(&builder, 0xAB) == NXMC2_RESULT_FLUSH_REQUIRED_ERROR);
+    assert(nxmc2_command_builder_flush(&builder) == NXMC2_RESULT_OK);
+    assert(nxmc2_command_builder_append(&builder, 0xAB) == NXMC2_RESULT_OK);
 
     return 0;
 }
