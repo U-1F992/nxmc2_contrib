@@ -181,7 +181,7 @@ void loop()
     {
         // NXMC2_RESULT_INVALID_HEADER_ERROR
         // NXMC2_RESULT_INVALID_HAT_ERROR
-        // NXMC2_RESULT_FLUSH_REQUIRED_ERROR
+        // NXMC2_RESULT_COMMAND_READY_ERROR
         nxmc2_command_builder_flush(&builder);
         return;
     }
@@ -193,7 +193,6 @@ void loop()
         return;
     }
     nxmc2_command_execute(&command, &handler);
-
-    // Once the command is completed, flush required.
+    
     nxmc2_command_builder_flush(&builder);
 }

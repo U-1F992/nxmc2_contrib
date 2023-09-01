@@ -51,7 +51,7 @@ NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t p
     }
     else if (is_complete_command_(builder->pos_))
     {
-        return NXMC2_RESULT_FLUSH_REQUIRED_ERROR;
+        return NXMC2_RESULT_COMMAND_READY_ERROR;
     }
     builder->buf_[builder->pos_] = packet;
     builder->pos_++;
