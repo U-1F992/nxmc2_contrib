@@ -69,6 +69,11 @@ void test_build(void)
     assert(ext0_ == 0xFFU);
     assert(ext1_ == 0xFEU);
     assert(ext2_ == 0xFDU);
+
+    // Once the command is completed, flush required.
+    assert(nxmc2_command_builder_append(&builder, 0xAB) == NXMC2_RESULT_FLUSH_REQUIRED_ERROR);
+    assert(nxmc2_command_builder_flush(&builder) == NXMC2_RESULT_OK);
+    assert(nxmc2_command_builder_append(&builder, 0xAB) == NXMC2_RESULT_OK);
 }
 
 void test_invalid_header(void)
@@ -77,7 +82,7 @@ void test_invalid_header(void)
 
     NXMC2CommandBuilder builder;
     assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
-    
+
     assert(nxmc2_command_builder_append(&builder, data[0]) == NXMC2_RESULT_INVALID_HEADER_ERROR);
     for (int i = 1; i < 11; i++)
     {
@@ -102,7 +107,7 @@ void test_invalid_hat_range(void)
     assert(nxmc2_command_builder_append(&builder, data[3]) == NXMC2_RESULT_INVALID_HAT_RANGE_ERROR);
     for (int i = 4; i < 11; i++)
     {
-        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_INVALID_HEADER_ERROR);
+        assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_INVALID_HAT_RANGE_ERROR);
     }
 
     NXMC2Command command;

@@ -1,42 +1,33 @@
 #include "nxmc2_contrib.h"
 
-NXMC2Result nxmc2_command_builder_clear(NXMC2CommandBuilder *builder)
+NXMC2Result nxmc2_command_builder_flush(NXMC2CommandBuilder *builder)
 {
     if (builder == NULL)
     {
         return NXMC2_RESULT_NULL_POINTER_ERROR;
     }
 
-    builder->ptr_ = 0;
+    builder->pos_ = 0;
     return NXMC2_RESULT_OK;
 }
 
-static bool is_complete_command_(NXMC2CommandBuilder *builder)
+static bool is_complete_command_(size_t pos)
 {
-    if (builder == NULL)
-    {
-        return false;
-    }
-
-    if (builder->ptr_ != (sizeof(builder->raw_) / sizeof(uint8_t)))
-    {
-        return false;
-    }
-    return true;
+    return pos == 11; // (sizeof(builder->buf_) / sizeof(uint8_t))
 }
 
-static bool is_valid_header_(size_t ptr, uint8_t packet)
+static bool is_valid_header_(size_t pos, uint8_t packet)
 {
-    if (ptr != 0)
+    if (pos != 0)
     {
         return true;
     }
     return packet == NXMC2_COMMAND_HEADER;
 }
 
-static bool is_valid_hat_range_(size_t ptr, uint8_t packet)
+static bool is_valid_hat_range_(size_t pos, uint8_t packet)
 {
-    if (ptr != 3)
+    if (pos != 3)
     {
         return true;
     }
@@ -50,35 +41,20 @@ NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t p
         return NXMC2_RESULT_NULL_POINTER_ERROR;
     }
 
-    if (!is_valid_header_(builder->ptr_, packet))
+    if (!is_valid_header_(builder->pos_, packet))
     {
-        NXMC2Result ret = nxmc2_command_builder_clear(builder);
-        if (ret != NXMC2_RESULT_OK)
-        {
-            return ret;
-        }
         return NXMC2_RESULT_INVALID_HEADER_ERROR;
     }
-    else if (!is_valid_hat_range_(builder->ptr_, packet))
+    else if (!is_valid_hat_range_(builder->pos_, packet))
     {
-        NXMC2Result ret = nxmc2_command_builder_clear(builder);
-        if (ret != NXMC2_RESULT_OK)
-        {
-            return ret;
-        }
         return NXMC2_RESULT_INVALID_HAT_RANGE_ERROR;
     }
-
-    if (is_complete_command_(builder))
+    else if (is_complete_command_(builder->pos_))
     {
-        NXMC2Result ret = nxmc2_command_builder_clear(builder);
-        if (ret != NXMC2_RESULT_OK)
-        {
-            return ret;
-        }
+        return NXMC2_RESULT_FLUSH_REQUIRED_ERROR;
     }
-    builder->raw_[builder->ptr_] = packet;
-    builder->ptr_++;
+    builder->buf_[builder->pos_] = packet;
+    builder->pos_++;
     return NXMC2_RESULT_OK;
 }
 
@@ -122,11 +98,11 @@ NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Comma
         return NXMC2_RESULT_NULL_POINTER_ERROR;
     }
 
-    if (!is_complete_command_(builder))
+    if (!is_complete_command_(builder->pos_))
     {
         return NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR;
     }
-    transfer_(builder->raw_, command);
+    transfer_(builder->buf_, command);
     return NXMC2_RESULT_OK;
 }
 
@@ -137,7 +113,7 @@ NXMC2Result nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder)
         return NXMC2_RESULT_NULL_POINTER_ERROR;
     }
 
-    NXMC2Result ret = nxmc2_command_builder_clear(builder);
+    NXMC2Result ret = nxmc2_command_builder_flush(builder);
     if (ret != NXMC2_RESULT_OK)
     {
         return ret;

@@ -62,8 +62,8 @@ typedef struct NXMC2Command
 
 typedef struct NXMC2CommandBuilder
 {
-    uint8_t raw_[11];
-    size_t ptr_;
+    uint8_t buf_[11];
+    size_t pos_;
 } NXMC2CommandBuilder;
 
 typedef struct NXMC2CommandHandlers
@@ -95,9 +95,10 @@ typedef enum NXMC2Result
     NXMC2_RESULT_INVALID_HEADER_ERROR,
     NXMC2_RESULT_INVALID_HAT_RANGE_ERROR,
     NXMC2_RESULT_INCOMPLETE_COMMAND_ERROR,
+    NXMC2_RESULT_FLUSH_REQUIRED_ERROR
 } NXMC2Result;
 
-NXMC2Result nxmc2_command_builder_clear(NXMC2CommandBuilder *builder);
+NXMC2Result nxmc2_command_builder_flush(NXMC2CommandBuilder *builder);
 NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t packet);
 NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Command *command);
 NXMC2Result nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder);
