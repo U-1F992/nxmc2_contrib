@@ -4,77 +4,77 @@
 
 static char buf_[256];
 
-static void handle_y(NXMC2CommandButtonState state)
+static void handle_y(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "Y\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_b(NXMC2CommandButtonState state)
+static void handle_b(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "B\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_a(NXMC2CommandButtonState state)
+static void handle_a(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "A\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_x(NXMC2CommandButtonState state)
+static void handle_x(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "X\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_l(NXMC2CommandButtonState state)
+static void handle_l(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "L\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_r(NXMC2CommandButtonState state)
+static void handle_r(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "R\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_zl(NXMC2CommandButtonState state)
+static void handle_zl(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "ZL\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_zr(NXMC2CommandButtonState state)
+static void handle_zr(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "ZR\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_minus(NXMC2CommandButtonState state)
+static void handle_minus(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "Minus\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_plus(NXMC2CommandButtonState state)
+static void handle_plus(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "Plus\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_l_click(NXMC2CommandButtonState state)
+static void handle_l_click(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "L Click\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_r_click(NXMC2CommandButtonState state)
+static void handle_r_click(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "R Click\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_home(NXMC2CommandButtonState state)
+static void handle_home(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "Home\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_capture(NXMC2CommandButtonState state)
+static void handle_capture(Nxmc2CommandButtonState state)
 {
     sprintf(buf_, "Capture\t%s", state == NXMC2_COMMAND_BUTTON_STATE_PRESSED ? "Pressed" : "Released");
     Serial.println(buf_);
 }
-static void handle_hat(NXMC2CommandHatState state)
+static void handle_hat(Nxmc2CommandHatState state)
 {
     const char *tmp;
     switch (state)
@@ -132,16 +132,16 @@ static void handle_ext(uint8_t ext0, uint8_t ext1, uint8_t ext2)
 static const int SERIAL_INACTIVE_TIMEOUT = 100;
 static int inactive_count = 0;
 
-static NXMC2CommandBuilder builder;
-static NXMC2Command command;
-static NXMC2CommandHandler handler;
+static Nxmc2CommandBuilder builder;
+static Nxmc2Command command;
+static Nxmc2CommandHandler handler;
 
 void setup()
 {
     Serial.begin(9600);
 
-    nxmc2_command_builder_initialize(&builder);
-    nxmc2_command_handler_initialize(&handler);
+    nxmc2_command_builder_new(&builder);
+    nxmc2_command_handler_new(&handler);
     handler.y = handle_y;
     handler.b = handle_b;
     handler.a = handle_a;
@@ -176,7 +176,7 @@ void loop()
     }
     inactive_count = 0;
 
-    NXMC2Result ret = nxmc2_command_builder_append(&builder, Serial.read());
+    Nxmc2Result ret = nxmc2_command_builder_append(&builder, Serial.read());
     if (ret != NXMC2_RESULT_OK)
     {
         // NXMC2_RESULT_INVALID_HEADER_ERROR

@@ -3,7 +3,7 @@
 const uint8_t NXMC2_COMMAND_HEADER = 0xABU;
 const uint8_t NXMC2_COMMAND_STICK_NEUTRAL = 128U;
 
-NXMC2Result nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandler *handler)
+Nxmc2Result nxmc2_command_execute(Nxmc2Command *command, Nxmc2CommandHandler *handler)
 {
     if (command == NULL || handler == NULL)
     {
