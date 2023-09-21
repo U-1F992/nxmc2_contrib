@@ -72,7 +72,7 @@ void test_build(void)
 
     // Once the command is completed, flush required.
     assert(nxmc2_command_builder_append(&builder, 0xAB) == NXMC2_RESULT_COMMAND_READY_ERROR);
-    assert(nxmc2_command_builder_flush(&builder) == NXMC2_RESULT_OK);
+    assert(nxmc2_command_builder_clear(&builder) == NXMC2_RESULT_OK);
     assert(nxmc2_command_builder_append(&builder, 0xAB) == NXMC2_RESULT_OK);
 }
 

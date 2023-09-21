@@ -170,7 +170,7 @@ void loop()
         if (SERIAL_INACTIVE_TIMEOUT < inactive_count)
         {
             inactive_count = 0;
-            nxmc2_command_builder_flush(&builder);
+            nxmc2_command_builder_clear(&builder);
         }
         return;
     }
@@ -182,7 +182,7 @@ void loop()
         // NXMC2_RESULT_INVALID_HEADER_ERROR
         // NXMC2_RESULT_INVALID_HAT_ERROR
         // NXMC2_RESULT_COMMAND_READY_ERROR
-        nxmc2_command_builder_flush(&builder);
+        nxmc2_command_builder_clear(&builder);
         return;
     }
 
@@ -194,5 +194,5 @@ void loop()
     }
     nxmc2_command_execute(&command, &handler);
     
-    nxmc2_command_builder_flush(&builder);
+    nxmc2_command_builder_clear(&builder);
 }

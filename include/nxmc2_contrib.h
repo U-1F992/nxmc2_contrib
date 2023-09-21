@@ -103,7 +103,7 @@ typedef enum Nxmc2Result
     NXMC2_RESULT_COMMAND_READY_ERROR
 } Nxmc2Result;
 
-Nxmc2Result nxmc2_command_builder_flush(Nxmc2CommandBuilder *builder);
+Nxmc2Result nxmc2_command_builder_clear(Nxmc2CommandBuilder *builder);
 Nxmc2Result nxmc2_command_builder_append(Nxmc2CommandBuilder *builder, uint8_t packet);
 Nxmc2Result nxmc2_command_builder_build(Nxmc2CommandBuilder *builder, Nxmc2Command *command);
 Nxmc2Result nxmc2_command_builder_new(Nxmc2CommandBuilder *builder);

@@ -1,6 +1,6 @@
 #include "nxmc2_contrib.h"
 
-Nxmc2Result nxmc2_command_builder_flush(Nxmc2CommandBuilder *builder)
+Nxmc2Result nxmc2_command_builder_clear(Nxmc2CommandBuilder *builder)
 {
     if (builder == NULL)
     {
@@ -113,7 +113,7 @@ Nxmc2Result nxmc2_command_builder_new(Nxmc2CommandBuilder *builder)
         return NXMC2_RESULT_NULL_POINTER_ERROR;
     }
 
-    Nxmc2Result ret = nxmc2_command_builder_flush(builder);
+    Nxmc2Result ret = nxmc2_command_builder_clear(builder);
     if (ret != NXMC2_RESULT_OK)
     {
         return ret;
