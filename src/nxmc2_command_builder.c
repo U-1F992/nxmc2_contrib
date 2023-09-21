@@ -1,6 +1,6 @@
 #include "nxmc2_contrib.h"
 
-NXMC2Result nxmc2_command_builder_flush(NXMC2CommandBuilder *builder)
+Nxmc2Result nxmc2_command_builder_flush(Nxmc2CommandBuilder *builder)
 {
     if (builder == NULL)
     {
@@ -34,7 +34,7 @@ static bool is_valid_hat_(size_t pos, uint8_t packet)
     return packet <= NXMC2_COMMAND_HAT_STATE_NEUTRAL;
 }
 
-NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t packet)
+Nxmc2Result nxmc2_command_builder_append(Nxmc2CommandBuilder *builder, uint8_t packet)
 {
     if (builder == NULL)
     {
@@ -58,7 +58,7 @@ NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t p
     return NXMC2_RESULT_OK;
 }
 
-static void transfer_(uint8_t *raw, NXMC2Command *command)
+static void transfer_(uint8_t *raw, Nxmc2Command *command)
 {
     // Equivalent to a struct with bit fields, but well-defined behavior.
     command->header = raw[0];
@@ -91,7 +91,7 @@ static void transfer_(uint8_t *raw, NXMC2Command *command)
     command->ext2 = raw[10];
 }
 
-NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Command *command)
+Nxmc2Result nxmc2_command_builder_build(Nxmc2CommandBuilder *builder, Nxmc2Command *command)
 {
     if (builder == NULL || command == NULL)
     {
@@ -106,14 +106,14 @@ NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Comma
     return NXMC2_RESULT_OK;
 }
 
-NXMC2Result nxmc2_command_builder_new(NXMC2CommandBuilder *builder)
+Nxmc2Result nxmc2_command_builder_new(Nxmc2CommandBuilder *builder)
 {
     if (builder == NULL)
     {
         return NXMC2_RESULT_NULL_POINTER_ERROR;
     }
 
-    NXMC2Result ret = nxmc2_command_builder_flush(builder);
+    Nxmc2Result ret = nxmc2_command_builder_flush(builder);
     if (ret != NXMC2_RESULT_OK)
     {
         return ret;
