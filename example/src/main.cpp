@@ -140,8 +140,8 @@ void setup()
 {
     Serial.begin(9600);
 
-    nxmc2_command_builder_initialize(&builder);
-    nxmc2_command_handler_initialize(&handler);
+    nxmc2_command_builder_new(&builder);
+    nxmc2_command_handler_new(&handler);
     handler.y = handle_y;
     handler.b = handle_b;
     handler.a = handle_a;
