@@ -1,6 +1,6 @@
 #include "nxmc2_contrib.h"
 
-NXMC2Result nxmc2_command_handler_initialize(NXMC2CommandHandler *handler)
+NXMC2Result nxmc2_command_handler_new(NXMC2CommandHandler *handler)
 {
     if (handler == NULL)
     {

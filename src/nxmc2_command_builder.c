@@ -106,7 +106,7 @@ NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Comma
     return NXMC2_RESULT_OK;
 }
 
-NXMC2Result nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder)
+NXMC2Result nxmc2_command_builder_new(NXMC2CommandBuilder *builder)
 {
     if (builder == NULL)
     {

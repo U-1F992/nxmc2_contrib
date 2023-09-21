@@ -106,9 +106,9 @@ typedef enum NXMC2Result
 NXMC2Result nxmc2_command_builder_flush(NXMC2CommandBuilder *builder);
 NXMC2Result nxmc2_command_builder_append(NXMC2CommandBuilder *builder, uint8_t packet);
 NXMC2Result nxmc2_command_builder_build(NXMC2CommandBuilder *builder, NXMC2Command *command);
-NXMC2Result nxmc2_command_builder_initialize(NXMC2CommandBuilder *builder);
+NXMC2Result nxmc2_command_builder_new(NXMC2CommandBuilder *builder);
 NXMC2Result nxmc2_command_execute(NXMC2Command *command, NXMC2CommandHandler *handler);
-NXMC2Result nxmc2_command_handler_initialize(NXMC2CommandHandler *handler);
+NXMC2Result nxmc2_command_handler_new(NXMC2CommandHandler *handler);
 
 #ifdef __cplusplus
 }

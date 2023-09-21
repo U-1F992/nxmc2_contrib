@@ -44,7 +44,7 @@ void test_build(void)
     uint8_t data[] = {0xABU, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
-    assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
+    assert(nxmc2_command_builder_new(&builder) == NXMC2_RESULT_OK);
     for (int i = 0; i < 11; i++)
     {
         assert(nxmc2_command_builder_append(&builder, data[i]) == NXMC2_RESULT_OK);
@@ -54,7 +54,7 @@ void test_build(void)
     assert(nxmc2_command_builder_build(&builder, &command) == NXMC2_RESULT_OK);
 
     NXMC2CommandHandler handler;
-    assert(nxmc2_command_handler_initialize(&handler) == NXMC2_RESULT_OK);
+    assert(nxmc2_command_handler_new(&handler) == NXMC2_RESULT_OK);
     handler.y = y;
     handler.b = b;
     handler.hat = hat;
@@ -81,7 +81,7 @@ void test_invalid_header(void)
     uint8_t data[] = {/* */ 0xFFU /* */, 1U, 0U, 8U, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
-    assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
+    assert(nxmc2_command_builder_new(&builder) == NXMC2_RESULT_OK);
 
     assert(nxmc2_command_builder_append(&builder, data[0]) == NXMC2_RESULT_INVALID_HEADER_ERROR);
     for (int i = 1; i < 11; i++)
@@ -98,7 +98,7 @@ void test_invalid_hat(void)
     int8_t data[] = {0xABU, 0U, 0U, /* */ 0xFFU /* */, 126U, 127U, 128U, 129U, 0xFFU, 0xFEU, 0xFDU};
 
     NXMC2CommandBuilder builder;
-    assert(nxmc2_command_builder_initialize(&builder) == NXMC2_RESULT_OK);
+    assert(nxmc2_command_builder_new(&builder) == NXMC2_RESULT_OK);
 
     for (int i = 0; i < 3; i++)
     {
